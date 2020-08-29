@@ -1,0 +1,33 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* middleNode(ListNode* head) {
+    ListNode* fast = head;
+    ListNode* slow = head;
+    
+    if(!head)
+        return 0;
+
+// why tooke both fast && fast-next both ???
+		
+// Case -- 1->2->3 : in this case fast would have 3 value but fast->next will be NULL ,so no further increment
+// Case -- 1->2  : in this case fast n fast->next both will be NULL.        
+
+    while(fast && fast->next)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return slow;
+        
+    }
+};
