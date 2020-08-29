@@ -1,0 +1,93 @@
+Solution 1: 
+(Using two pointers without creating any new node)
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+
+
+struct ListNode* removeNthFromEnd(struct ListNode* head, int n){
+struct ListNode* fast;
+struct ListNode* slow;
+fast=head;
+slow=head;
+for(int i=0;i<n;i++) //take pointer fast n places ahead of slow
+{   
+    fast=fast->next;
+    if(!fast)        // when we have to delete the first node (12345 n n =5 OR 1 & n =1)
+    return head->next;
+}  
+    
+// take fast to last node so that slow is 1 behind the node we want to delete    
+while(fast->next)   
+{   
+    slow=slow->next;
+    fast=fast->next;
+    
+}
+slow->next=slow->next->next; // delete the node next to slow
+
+
+return head;
+
+}
+
+
+Solution 2:
+
+(Using two pointers and creating a advance node to head)
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */        
+        class Solution {
+public:
+        ListNode* removeNthFromEnd(ListNode* head, int n) 
+      {
+       // 1->2>3>4>5 if n =3, we will always keep our prev_target pointer to (n+1) from end i.e. 2 in case
+       // For 1->NULL , we should have ptr which next would be head .i.e prev_target should point to previous of head 
+       // For n =5 case, again head encounter, so we have to be on prev of head ptr.       
+       // Taking head_prev a node before the head node(head will be its next always)   
+       // pointer prev_target is meant to point one node behind the target node
+       // pointer advance is meant to advance till nth node and then help prev_target to get its right position 
+       // pointer target_node is to delete the target node.   
+            
+        ListNode head_prev = NULL;
+        ListNode*prev_target, *advance, *target_node = NULL;
+        head_prev.next = head;
+        prev_target = &head_prev;
+        advance = &head_prev;
+        
+        for (int i=0; i<n; i++)
+        {                        
+            advance = advance->next;            
+        }
+         
+        while(advance->next != NULL)
+        {
+            advance =advance->next;
+            prev_target=prev_target->next;
+        }
+        target_node = prev_target->next;
+        prev_target->next = prev_target->next->next;
+        delete target_node;
+        return head_prev.next;
+      }
+};
+        
+        
+        
+        
+ 
